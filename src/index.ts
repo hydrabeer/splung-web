@@ -36,7 +36,7 @@ function page(message: string): string {
 		<meta property="og:type" content="website">
 		<meta property="og:url" content="https://splung.ca">
 		<meta property="og:title" content="Splung">
-		<meta property="og:description" content="Your description here">
+		<meta property="og:description" content="splung city">
 		<meta property="og:image" content="https://splung.ca/splung.gif">
 		<meta property="og:image:type" content="image/gif">
 		<meta name="twitter:card" content="summary_large_image">
