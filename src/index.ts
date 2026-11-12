@@ -25,7 +25,7 @@ function greeting(hour: number): string {
 	return `good ${timeOfDay(hour)} splung city`;
 }
 
-function page(message: string): string {
+function page(message: string, nonce: string): string {
 	return `<!doctype html>
 <html lang="en">
 	<head>
@@ -40,11 +40,10 @@ function page(message: string): string {
 		<meta property="og:image" content="https://splung.ca/splung.gif">
 		<meta property="og:image:type" content="image/gif">
 		<meta name="twitter:card" content="summary_large_image">
-		<meta name="theme-color" content="#5865F2">
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap" rel="stylesheet" />
-		<style>
+		<style nonce="${nonce}">
 			:root {
 				color-scheme: dark;
 				--bg: #071014;
@@ -110,7 +109,7 @@ function page(message: string): string {
 			<img src="/splung.gif" alt="splung grown" />
 			<h1 id="greeting">${message}</h1>
 		</main>
-		<script>
+		<script nonce="${nonce}">
 			const TZ = ${JSON.stringify(CALGARY_TZ)};
 
 			function calgaryHour() {
@@ -143,18 +142,59 @@ function page(message: string): string {
 </html>`;
 }
 
+function makeNonce(): string {
+        const bytes = crypto.getRandomValues(new Uint8Array(16));
+        return btoa(String.fromCharCode(...bytes));
+}
+
+function securityHeaders(nonce: string, extra: Record<string, string> = {}): Headers {
+        const csp = [
+                "default-src 'none'",
+                "base-uri 'self'",
+                "object-src 'none'",
+                "frame-ancestors 'none'",
+                "form-action 'self'",
+                "upgrade-insecure-requests",
+                "img-src 'self' data:",
+                "media-src 'self'",
+                "manifest-src 'self'",
+                "font-src https://fonts.gstatic.com",
+                `style-src 'self' 'nonce-${nonce}' https://fonts.googleapis.com`,
+                `script-src 'self' 'nonce-${nonce}'`,
+                "connect-src 'self'",
+                "require-trusted-types-for 'script'",
+                "trusted-types 'none'",
+        ].join("; ");
+
+        return new Headers({
+                "Content-Security-Policy": csp,
+                "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
+                "Cross-Origin-Opener-Policy": "same-origin",
+                "X-Frame-Options": "DENY",
+                "Referrer-Policy": "no-referrer",
+                "X-Content-Type-Options": "nosniff",
+                "Cross-Origin-Resource-Policy": "same-origin",
+                ...extra,
+        });
+}
+
 export default {
 	async fetch(request): Promise<Response> {
 		const url = new URL(request.url);
+		const nonce = makeNonce();
+
 		if (url.pathname !== "/" && url.pathname !== "") {
-			return new Response("not found", { status: 404 });
+			return new Response("not found", {
+				status: 404,
+				headers: securityHeaders(nonce),
+			});
 		}
 
-		return new Response(page(greeting(calgaryHour())), {
-			headers: {
+		return new Response(page(greeting(calgaryHour()), nonce), {
+			headers: securityHeaders(nonce, {
 				"content-type": "text/html; charset=utf-8",
 				"cache-control": "public, max-age=60",
-			},
+			}),
 		});
 	},
 } satisfies ExportedHandler<Env>;
