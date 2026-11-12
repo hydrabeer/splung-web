@@ -32,6 +32,7 @@ function page(message: string, nonce: string): string {
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 		<title>splung city</title>
+		<meta name="description" content="GOOD MORNING SPLUNG CITY!">
 		<meta name="theme-color" content="#071014" />
 		<meta property="og:type" content="website">
 		<meta property="og:url" content="https://splung.ca">
