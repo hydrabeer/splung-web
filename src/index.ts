@@ -33,6 +33,14 @@ function page(message: string): string {
 		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 		<title>splung city</title>
 		<meta name="theme-color" content="#071014" />
+		<meta property="og:type" content="website">
+		<meta property="og:url" content="https://splung.ca">
+		<meta property="og:title" content="Splung">
+		<meta property="og:description" content="Your description here">
+		<meta property="og:image" content="https://splung.ca/splung.gif">
+		<meta property="og:image:type" content="image/gif">
+		<meta name="twitter:card" content="summary_large_image">
+		<meta name="theme-color" content="#5865F2">
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap" rel="stylesheet" />
