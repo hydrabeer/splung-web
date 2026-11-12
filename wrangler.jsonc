@@ -1,0 +1,21 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "splung",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-11-12",
+	"workers_dev": true,
+	"preview_urls": true,
+	"observability": {
+		"enabled": true,
+		"traces": {
+			"enabled": true,
+		},
+	},
+	"assets": {
+		"directory": "./public",
+	},
+	"routes": [
+		{ "pattern": "splung.ca", "custom_domain": true },
+		{ "pattern": "www.splung.ca", "custom_domain": true },
+	],
+}
