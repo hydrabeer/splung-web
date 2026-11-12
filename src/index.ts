@@ -40,10 +40,15 @@ function page(message: string, nonce: string): string {
 		<meta property="og:image" content="https://splung.ca/splung.gif">
 		<meta property="og:image:type" content="image/gif">
 		<meta name="twitter:card" content="summary_large_image">
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap" rel="stylesheet" />
+		<link rel="preload" href="/fonts/inter-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 		<style nonce="${nonce}">
+			@font-face {
+				font-family: Inter;
+				font-weight: 700;
+				font-style: normal;
+				font-display: swap;
+				src: url(/fonts/inter-latin-700-normal.woff2) format("woff2");
+			}
 			:root {
 				color-scheme: dark;
 				--bg: #071014;
@@ -161,8 +166,8 @@ function securityHeaders(nonce: string, extra: Record<string, string> = {}): Hea
                 "img-src 'self' data:",
                 "media-src 'self'",
                 "manifest-src 'self'",
-                "font-src https://fonts.gstatic.com",
-                `style-src 'self' 'nonce-${nonce}' https://fonts.googleapis.com`,
+                "font-src 'self'",
+                `style-src 'self' 'nonce-${nonce}'`,
                 `script-src 'self' 'nonce-${nonce}'`,
                 "connect-src 'self'",
                 "require-trusted-types-for 'script'",
