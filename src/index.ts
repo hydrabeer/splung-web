@@ -84,7 +84,7 @@ function page(message: string, nonce: string): string {
 				width: min(100%, 42rem);
 			}
 
-			img {
+			img, video {
 				display: block;
 				width: 100%;
 				height: auto;
@@ -106,7 +106,10 @@ function page(message: string, nonce: string): string {
 	</head>
 	<body>
 		<main>
-			<img src="/splung.gif" alt="splung grown" />
+			<video autoplay loop muted playsinline width="314" height="314" poster="/splung-poster.webp" aria-label="splung grown">
+				<source src="/splung.webm" type="video/webm">
+				<source src="/splung.mp4" type="video/mp4">
+			</video>
 			<h1 id="greeting">${message}</h1>
 		</main>
 		<script nonce="${nonce}">
